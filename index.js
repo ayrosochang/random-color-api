@@ -7,12 +7,19 @@ const { ApolloServer, gql } = require('apollo-server-express');
 
 const db = lowDb(new FileSync('db.json'))
 
-db.defaults({colors: []}).write()
 
 const app = express()
 
 app.use(cors())
 app.use(bodyParser.json())
+
+let colors = []
+for(let i = 0; i < 100; i++) {
+ 
+  colors.push("#"+((1<<24)*Math.random()|0).toString(16))
+}
+
+db.defaults({colors: colors}).write()
 
 const typeDefs = gql`
   type Query {
